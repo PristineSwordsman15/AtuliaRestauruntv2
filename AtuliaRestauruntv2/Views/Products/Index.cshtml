@@ -1,10 +1,10 @@
-﻿@model IEnumerable<AtuliaRestauruntv2.Models.OrderItem>
+﻿ @model IEnumerable<AtuliaRestauruntv2.Models.Product>
 
 @{
-    ViewData["Title"] = "Order Items";
+    ViewData["Title"] = "Products";
 }
 
-<h1>Restaurunts Products</h1>
+<h1>Restaurant Products</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,7 +12,7 @@
 
 <form asp-action="Index" method="get">
     <div class="form-group">
-        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Search by Product or Order ID" />
+        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Search by Product Name" />
         <button type="submit" class="btn btn-primary">Search</button>
     </div>
 </form>
@@ -21,40 +21,40 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["OrderSortParm"]">Order ID</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ProductSortParm"]">Product Name</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ProductSortParm"]">Product</a>
+                @Html.DisplayNameFor(model => model.First().Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.First().Stock)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order)
+                Category
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var product in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Order.OrderId)
+                    @Html.DisplayFor(modelItem => product.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Product.Name)
+                    @Html.DisplayFor(modelItem => product.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
+                    @Html.DisplayFor(modelItem => product.Stock)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    @Html.DisplayFor(modelItem => product.Category.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.OrderItemId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.OrderItemId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.OrderItemId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@product.ProductId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@product.ProductId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@product.ProductId">Delete</a>
                 </td>
             </tr>
         }

@@ -25,8 +25,11 @@ namespace AtuliaRestauruntv2.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var AtuliaRestauruntv2Context = _context.Orders.Include(o =>o.OrderDate );
-            return View(await AtuliaRestauruntv2Context.ToListAsync());
+            //FetcH orders without including OrderDate
+            var orders = await _context.Orders.ToListAsync();
+            return View(orders);    
+            
+    
         }
 
         // GET: Orders/Details/5

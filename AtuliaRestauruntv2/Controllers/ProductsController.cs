@@ -25,44 +25,36 @@ namespace AtuliaRestauruntv2.Controllers
         // GET: Products
         public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            // Pass current sort order and search string to the view
-            
             ViewData["ProductSortParm"] = sortOrder == "Product" ? "product_desc" : "Product";
             ViewData["CurrentFilter"] = searchString;
 
-            var products = from o in _context.OrderItems.Include(o => o.Order).Include(o => o.Product)
-                             select o;
+            var products = _context.Products.Include(p => p.Category).AsQueryable();
 
-            // Filter by search string
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(o => o.Product.Name.Contains(searchString) ||
-                                                   o.Order.OrderId.ToString().Contains(searchString));
+                products = products.Where(p => p.Name.Contains(searchString));
             }
 
-            // Sort based on the sortOrder parameter
             switch (sortOrder)
             {
-                case "order_desc":
-                    products = products.OrderByDescending(o => o.Order.OrderId);
+                case "product_desc":
+                    products = products.OrderByDescending(p => p.Name);
                     break;
                 case "Product":
-                    products = products.OrderBy(o => o.Product.Name);
-                    break;
-                case "product_desc":
-                    products = products.OrderByDescending(o => o.Product.Name);
-                    break;
                 default:
-                    products = products.OrderBy(o => o.Order.OrderId);
+                    products = products.OrderBy(p => p.Name);
                     break;
             }
 
             return View(await products.ToListAsync());
         }
 
+
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
+
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -82,7 +74,7 @@ namespace AtuliaRestauruntv2.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
             return View();
         }
 
@@ -99,7 +91,7 @@ namespace AtuliaRestauruntv2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -116,7 +108,7 @@ namespace AtuliaRestauruntv2.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -152,7 +144,7 @@ namespace AtuliaRestauruntv2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryId", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
             return View(product);
         }
 
