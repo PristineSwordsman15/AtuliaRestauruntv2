@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AtuliaRestauruntv2.Data;
 using AtuliaRestauruntv2.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AtuliaRestauruntv2.Controllers
 {
+    [Authorize] // this data annotation makes it so only logged in users can make changes to this controller
     public class OrdersController : Controller
     {
         private readonly AtuliaRestauruntv2Context _context;
@@ -56,7 +58,7 @@ namespace AtuliaRestauruntv2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OrderId,OrderDate,UserId,TotalAmount")] Order order)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(order);
                 await _context.SaveChangesAsync();

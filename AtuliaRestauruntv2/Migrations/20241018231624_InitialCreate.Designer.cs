@@ -4,6 +4,7 @@ using AtuliaRestauruntv2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AtuliaRestauruntv2.Migrations
 {
     [DbContext(typeof(AtuliaRestauruntv2Context))]
-    partial class AtuliaRestauruntv2ContextModelSnapshot : ModelSnapshot
+    [Migration("20241018231624_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,16 +51,21 @@ namespace AtuliaRestauruntv2.Migrations
                         new
                         {
                             CategoryId = 2,
-                            Name = "Main"
+                            Name = "Entree"
                         },
                         new
                         {
                             CategoryId = 3,
-                            Name = "Dessert"
+                            Name = "Side Dish"
                         },
                         new
                         {
                             CategoryId = 4,
+                            Name = "Dessert"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
                             Name = "Beverage"
                         });
                 });
@@ -83,7 +91,7 @@ namespace AtuliaRestauruntv2.Migrations
                         new
                         {
                             IngredientId = 1,
-                            Name = "Potato"
+                            Name = "Beef"
                         },
                         new
                         {
@@ -98,62 +106,17 @@ namespace AtuliaRestauruntv2.Migrations
                         new
                         {
                             IngredientId = 4,
-                            Name = "Naan"
+                            Name = "Tortilla"
                         },
                         new
                         {
                             IngredientId = 5,
-                            Name = "Spinach"
+                            Name = "Lettuce"
                         },
                         new
                         {
                             IngredientId = 6,
                             Name = "Tomato"
-                        },
-                        new
-                        {
-                            IngredientId = 7,
-                            Name = "White Rice"
-                        },
-                        new
-                        {
-                            IngredientId = 8,
-                            Name = "Peas"
-                        },
-                        new
-                        {
-                            IngredientId = 9,
-                            Name = "Coriander"
-                        },
-                        new
-                        {
-                            IngredientId = 10,
-                            Name = "Lentils"
-                        },
-                        new
-                        {
-                            IngredientId = 11,
-                            Name = "Gulab Jamun"
-                        },
-                        new
-                        {
-                            IngredientId = 12,
-                            Name = "Ice Cream"
-                        },
-                        new
-                        {
-                            IngredientId = 13,
-                            Name = "Water"
-                        },
-                        new
-                        {
-                            IngredientId = 14,
-                            Name = "Mango Lassi"
-                        },
-                        new
-                        {
-                            IngredientId = 15,
-                            Name = "Coke"
                         });
                 });
 
@@ -250,131 +213,31 @@ namespace AtuliaRestauruntv2.Migrations
                         {
                             ProductId = 1,
                             CategoryId = 2,
-                            Description = "A fluffy bread popular in North India",
+                            Description = "A delicious beef taco",
                             ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Naan",
-                            Price = 7.99m,
-                            Stock = 25
+                            Name = "Beef Taco",
+                            Price = 2.50m,
+                            Stock = 100
                         },
                         new
                         {
                             ProductId = 2,
                             CategoryId = 2,
-                            Description = "Mild yummy rice with peas",
+                            Description = "A delicious chicken taco",
                             ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Fried Rice",
-                            Price = 10.99m,
-                            Stock = 40
+                            Name = "Chicken Taco",
+                            Price = 1.99m,
+                            Stock = 101
                         },
                         new
                         {
                             ProductId = 3,
                             CategoryId = 2,
-                            Description = "Fried Potato Curry served with Naan and Rice",
+                            Description = "A delicious fish taco",
                             ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Aloo Fry",
-                            Price = 8.50m,
-                            Stock = 10
-                        },
-                        new
-                        {
-                            ProductId = 4,
-                            CategoryId = 4,
-                            Description = "Chilled Fizzy Beverage",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Coke",
-                            Price = 2.99m,
-                            Stock = 50
-                        },
-                        new
-                        {
-                            ProductId = 5,
-                            CategoryId = 4,
-                            Description = "Beverage",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Water",
+                            Name = "Fish Taco",
                             Price = 3.99m,
-                            Stock = 50
-                        },
-                        new
-                        {
-                            ProductId = 6,
-                            CategoryId = 3,
-                            Description = "Cool Mango drink",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Mango Lassi",
-                            Price = 5.00m,
-                            Stock = 20
-                        },
-                        new
-                        {
-                            ProductId = 7,
-                            CategoryId = 3,
-                            Description = "Indian sweet made with milk powder",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Gulab Jamun",
-                            Price = 4.99m,
-                            Stock = 30
-                        },
-                        new
-                        {
-                            ProductId = 8,
-                            CategoryId = 3,
-                            Description = "Frozen dessert",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Ice Cream",
-                            Price = 2.99m,
-                            Stock = 60
-                        },
-                        new
-                        {
-                            ProductId = 9,
-                            CategoryId = 2,
-                            Description = "Chiken flavoured lightly in spices and served with rice",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Butter Chicken",
-                            Price = 20.99m,
-                            Stock = 30
-                        },
-                        new
-                        {
-                            ProductId = 10,
-                            CategoryId = 2,
-                            Description = "Fish curry served with rice",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Fish Madrasi",
-                            Price = 19.99m,
-                            Stock = 20
-                        },
-                        new
-                        {
-                            ProductId = 11,
-                            CategoryId = 1,
-                            Description = "Spinach deepfried coated in batter",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Palak Fritters",
-                            Price = 6.99m,
-                            Stock = 30
-                        },
-                        new
-                        {
-                            ProductId = 12,
-                            CategoryId = 1,
-                            Description = "Chicken lightly coated in spices and fried",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Chicken Lollipops",
-                            Price = 8.9m,
-                            Stock = 30
-                        },
-                        new
-                        {
-                            ProductId = 13,
-                            CategoryId = 2,
-                            Description = "Lentil cooked with tomato and garnished with coriander.",
-                            ImageUrl = "https://via.placeholder.com/150",
-                            Name = "Daal Fry",
-                            Price = 7.99m,
-                            Stock = 20
+                            Stock = 90
                         });
                 });
 
@@ -384,6 +247,9 @@ namespace AtuliaRestauruntv2.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductIngredientId")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId", "IngredientId");
@@ -396,102 +262,74 @@ namespace AtuliaRestauruntv2.Migrations
                         new
                         {
                             ProductId = 1,
-                            IngredientId = 4
+                            IngredientId = 1,
+                            ProductIngredientId = 0
+                        },
+                        new
+                        {
+                            ProductId = 1,
+                            IngredientId = 4,
+                            ProductIngredientId = 0
+                        },
+                        new
+                        {
+                            ProductId = 1,
+                            IngredientId = 5,
+                            ProductIngredientId = 0
+                        },
+                        new
+                        {
+                            ProductId = 1,
+                            IngredientId = 6,
+                            ProductIngredientId = 0
                         },
                         new
                         {
                             ProductId = 2,
-                            IngredientId = 7
+                            IngredientId = 2,
+                            ProductIngredientId = 0
                         },
                         new
                         {
                             ProductId = 2,
-                            IngredientId = 8
+                            IngredientId = 4,
+                            ProductIngredientId = 0
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            IngredientId = 5,
+                            ProductIngredientId = 0
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            IngredientId = 6,
+                            ProductIngredientId = 0
                         },
                         new
                         {
                             ProductId = 3,
-                            IngredientId = 1
+                            IngredientId = 3,
+                            ProductIngredientId = 0
                         },
                         new
                         {
                             ProductId = 3,
-                            IngredientId = 4
+                            IngredientId = 4,
+                            ProductIngredientId = 0
                         },
                         new
                         {
                             ProductId = 3,
-                            IngredientId = 7
+                            IngredientId = 5,
+                            ProductIngredientId = 0
                         },
                         new
                         {
-                            ProductId = 4,
-                            IngredientId = 15
-                        },
-                        new
-                        {
-                            ProductId = 5,
-                            IngredientId = 13
-                        },
-                        new
-                        {
-                            ProductId = 6,
-                            IngredientId = 14
-                        },
-                        new
-                        {
-                            ProductId = 7,
-                            IngredientId = 11
-                        },
-                        new
-                        {
-                            ProductId = 8,
-                            IngredientId = 12
-                        },
-                        new
-                        {
-                            ProductId = 9,
-                            IngredientId = 2
-                        },
-                        new
-                        {
-                            ProductId = 9,
-                            IngredientId = 7
-                        },
-                        new
-                        {
-                            ProductId = 10,
-                            IngredientId = 3
-                        },
-                        new
-                        {
-                            ProductId = 10,
-                            IngredientId = 7
-                        },
-                        new
-                        {
-                            ProductId = 11,
-                            IngredientId = 5
-                        },
-                        new
-                        {
-                            ProductId = 12,
-                            IngredientId = 2
-                        },
-                        new
-                        {
-                            ProductId = 13,
-                            IngredientId = 10
-                        },
-                        new
-                        {
-                            ProductId = 13,
-                            IngredientId = 9
-                        },
-                        new
-                        {
-                            ProductId = 13,
-                            IngredientId = 6
+                            ProductId = 3,
+                            IngredientId = 6,
+                            ProductIngredientId = 0
                         });
                 });
 
