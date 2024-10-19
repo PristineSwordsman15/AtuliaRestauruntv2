@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AtuliaRestauruntv2.Data;
 using AtuliaRestauruntv2.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Data.SqlClient;
 
 namespace AtuliaRestauruntv2.Controllers
 {
@@ -24,7 +25,8 @@ namespace AtuliaRestauruntv2.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.ToListAsync());
+            var AtuliaRestauruntv2Context = _context.Orders.Include(o =>o.OrderDate );
+            return View(await AtuliaRestauruntv2Context.ToListAsync());
         }
 
         // GET: Orders/Details/5

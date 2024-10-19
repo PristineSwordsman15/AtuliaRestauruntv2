@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AtuliaRestauruntv2.Data;
 using AtuliaRestauruntv2.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Data.SqlClient;
 
 namespace AtuliaRestauruntv2.Controllers
 {
@@ -22,10 +23,41 @@ namespace AtuliaRestauruntv2.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            var atuliaRestauruntv2Context = _context.Products.Include(p => p.Category);
-            return View(await atuliaRestauruntv2Context.ToListAsync());
+            // Pass current sort order and search string to the view
+            
+            ViewData["ProductSortParm"] = sortOrder == "Product" ? "product_desc" : "Product";
+            ViewData["CurrentFilter"] = searchString;
+
+            var products = from o in _context.OrderItems.Include(o => o.Order).Include(o => o.Product)
+                             select o;
+
+            // Filter by search string
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(o => o.Product.Name.Contains(searchString) ||
+                                                   o.Order.OrderId.ToString().Contains(searchString));
+            }
+
+            // Sort based on the sortOrder parameter
+            switch (sortOrder)
+            {
+                case "order_desc":
+                    products = products.OrderByDescending(o => o.Order.OrderId);
+                    break;
+                case "Product":
+                    products = products.OrderBy(o => o.Product.Name);
+                    break;
+                case "product_desc":
+                    products = products.OrderByDescending(o => o.Product.Name);
+                    break;
+                default:
+                    products = products.OrderBy(o => o.Order.OrderId);
+                    break;
+            }
+
+            return View(await products.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -61,7 +93,7 @@ namespace AtuliaRestauruntv2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductId,Name,Description,Price,Stock,CategoryId,ImageUrl")] Product product)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(product);
                 await _context.SaveChangesAsync();

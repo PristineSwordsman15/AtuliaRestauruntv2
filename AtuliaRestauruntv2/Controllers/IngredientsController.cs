@@ -22,9 +22,26 @@ namespace AtuliaRestauruntv2.Controllers
         }
 
         // GET: Ingredients
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            return View(await _context.Ingredients.ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CurrentFilter"] = searchString;
+
+            var ingredients = from i in _context.Ingredients
+                              select i;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                ingredients = ingredients.Where(i => i.Name.Contains(searchString));
+            }
+
+            ingredients = sortOrder switch
+            {
+                "name_desc" => ingredients.OrderByDescending(i => i.Name),
+                _ => ingredients.OrderBy(i => i.Name),
+            };
+
+            return View(await ingredients.AsNoTracking().ToListAsync());
         }
 
         // GET: Ingredients/Details/5

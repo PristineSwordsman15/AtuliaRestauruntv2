@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AtuliaRestauruntv2.Data;
 using AtuliaRestauruntv2.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Data.SqlClient;
 
 namespace AtuliaRestauruntv2.Controllers
 {
@@ -22,11 +23,44 @@ namespace AtuliaRestauruntv2.Controllers
         }
 
         // GET: OrderItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            var atuliaRestauruntv2Context = _context.OrderItems.Include(o => o.Order).Include(o => o.Product);
-            return View(await atuliaRestauruntv2Context.ToListAsync());
+            // Pass current sort order and search string to the view
+            ViewData["OrderSortParm"] = String.IsNullOrEmpty(sortOrder) ? "order_desc" : "";
+            ViewData["ProductSortParm"] = sortOrder == "Product" ? "product_desc" : "Product";
+            ViewData["CurrentFilter"] = searchString;
+
+            var orderItems = from o in _context.OrderItems.Include(o => o.Order).Include(o => o.Product)
+                             select o;
+
+            // Filter by search string
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                orderItems = orderItems.Where(o => o.Product.Name.Contains(searchString) ||
+                                                   o.Order.OrderId.ToString().Contains(searchString));
+            }
+
+            // Sort based on the sortOrder parameter
+            switch (sortOrder)
+            {
+                case "order_desc":
+                    orderItems = orderItems.OrderByDescending(o => o.Order.OrderId);
+                    break;
+                case "Product":
+                    orderItems = orderItems.OrderBy(o => o.Product.Name);
+                    break;
+                case "product_desc":
+                    orderItems = orderItems.OrderByDescending(o => o.Product.Name);
+                    break;
+                default:
+                    orderItems = orderItems.OrderBy(o => o.Order.OrderId);
+                    break;
+            }
+
+            return View(await orderItems.ToListAsync());
         }
+
+
 
         // GET: OrderItems/Details/5
         public async Task<IActionResult> Details(int? id)
