@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AtuliaRestauruntv2.Data;
 using AtuliaRestauruntv2.Models;
 using Microsoft.AspNetCore.Authorization;
-
+using PagedList;
 namespace AtuliaRestauruntv2.Controllers
 {
     [Authorize] // this data annotation makes it so only logged in users can make changes to this controller
@@ -22,7 +22,7 @@ namespace AtuliaRestauruntv2.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index(string sortOrder,string searchString)
+        public async Task<IActionResult> Index(string sortOrder,string currentFilter,string searchString,int? page)
         {
 
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";

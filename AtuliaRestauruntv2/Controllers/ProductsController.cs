@@ -9,6 +9,7 @@ using AtuliaRestauruntv2.Data;
 using AtuliaRestauruntv2.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
+using PagedList;
 
 namespace AtuliaRestauruntv2.Controllers
 {
@@ -23,11 +24,22 @@ namespace AtuliaRestauruntv2.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<ViewResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewData["ProductSortParm"] = sortOrder == "Product" ? "product_desc" : "Product";
             ViewData["CurrentFilter"] = searchString;
 
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
             var products = _context.Products.Include(p => p.Category).AsQueryable();
 
             if (!String.IsNullOrEmpty(searchString))
@@ -46,7 +58,9 @@ namespace AtuliaRestauruntv2.Controllers
                     break;
             }
 
-            return View(await products.ToListAsync());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(products.ToPagedList(pageNumber, pageSize));
         }
 
 

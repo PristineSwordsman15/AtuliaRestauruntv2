@@ -1,10 +1,12 @@
-﻿ @model IEnumerable<AtuliaRestauruntv2.Models.Product>
+﻿@model PagedList.IPagedList<AtuliaRestauruntv2.Models.Product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewData["Title"] = "Products";
+    ViewBag.Title = "Products";
 }
 
-<h1>Restaurant Products</h1>
+<h2>Restaurant Products</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -60,4 +62,7 @@
         }
     </tbody>
 </table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
