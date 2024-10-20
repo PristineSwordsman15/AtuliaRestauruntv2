@@ -44,17 +44,17 @@ namespace AtuliaRestauruntv2.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(p => p.Name.Contains(searchString));
+                products = products.Where(p => p.ProductName.Contains(searchString));
             }
 
             switch (sortOrder)
             {
                 case "product_desc":
-                    products = products.OrderByDescending(p => p.Name);
+                    products = products.OrderByDescending(p => p.ProductName);
                     break;
                 case "Product":
                 default:
-                    products = products.OrderBy(p => p.Name);
+                    products = products.OrderBy(p => p.ProductName);
                     break;
             }
 

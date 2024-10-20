@@ -12,7 +12,7 @@ namespace AtuliaRestauruntv2.Models
 
         [Required(ErrorMessage = "Product name is required.")]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Product name must be between 3 and 100 characters.")]
-        public string? Name { get; set; }
+        public string? ProductName { get; set; }
         [StringLength(2000, ErrorMessage = "Product description must be less than 2000 characters.")]
         public string? Description { get; set; }
         [Required(ErrorMessage = "Product price is required.")]

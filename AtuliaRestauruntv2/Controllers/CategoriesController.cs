@@ -33,13 +33,13 @@ namespace AtuliaRestauruntv2.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                categories = categories.Where(c => c.Name.Contains(searchString));
+                categories = categories.Where(c => c.CategoryName.Contains(searchString));
             }
 
             categories = sortOrder switch
             {
-                "name_desc" => categories.OrderByDescending(i => i.Name),
-                _ => categories.OrderBy(i => i.Name),
+                "name_desc" => categories.OrderByDescending(i => i.CategoryName),
+                _ => categories.OrderBy(i => i.CategoryName),
             };
 
             return View(await categories.AsNoTracking().ToListAsync());

@@ -9,7 +9,7 @@ namespace AtuliaRestauruntv2.Models
         public int IngredientId { get; set; }
         [Required]
         [StringLength(50,MinimumLength =3, ErrorMessage = "Ingredient Name must be between 3 and 50 characters.")]
-        public string Name { get; set; }
+        public string IngredientName { get; set; }
         [ValidateNever]
         public ICollection<ProductIngredient> ProductIngredients { get; set; }
     }

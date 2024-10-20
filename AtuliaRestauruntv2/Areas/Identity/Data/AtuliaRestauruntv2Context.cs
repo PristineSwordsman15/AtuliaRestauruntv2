@@ -1,11 +1,14 @@
-﻿using AtuliaRestauruntv2.Models;
+﻿using AtuliaRestauruntv2.Areas.Identity.Data;
+using AtuliaRestauruntv2.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Identity.Client;
 
 namespace AtuliaRestauruntv2.Data;
 
-public class AtuliaRestauruntv2Context : IdentityDbContext<IdentityUser>
+public class AtuliaRestauruntv2Context : IdentityDbContext<ApplicationUser>
 {
     public AtuliaRestauruntv2Context(DbContextOptions<AtuliaRestauruntv2Context> options)
         : base(options)
@@ -22,6 +25,11 @@ public class AtuliaRestauruntv2Context : IdentityDbContext<IdentityUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        //Customise the ASP.NET Identity model and override the defaults if needed.
+        //For example, you can rename the ASP.NET Identity table names and more.
+        //Add your customisations after calling base.OnModelCreating(modelBuilder);
+
+   
 
         // Define composite key and relationships for ProductIngredient
         modelBuilder.Entity<ProductIngredient>()

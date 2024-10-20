@@ -36,7 +36,7 @@ namespace AtuliaRestauruntv2.Controllers
             // Filter by search string
             if (!String.IsNullOrEmpty(searchString))
             {
-                orderItems = orderItems.Where(o => o.Product.Name.Contains(searchString) ||
+                orderItems = orderItems.Where(o => o.Product.ProductName.Contains(searchString) ||
                                                    o.Order.OrderId.ToString().Contains(searchString));
             }
 
@@ -47,7 +47,7 @@ namespace AtuliaRestauruntv2.Controllers
                     orderItems = orderItems.OrderByDescending(o => o.Order.OrderId);
                     break;
                 case "Product":
-                    orderItems = orderItems.OrderBy(o => o.Product.Name);
+                    orderItems = orderItems.OrderBy(o => o.Product.CategoryName);
                     break;
                 case "product_desc":
                     orderItems = orderItems.OrderByDescending(o => o.Product.Name);

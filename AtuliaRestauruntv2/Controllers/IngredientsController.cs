@@ -32,13 +32,13 @@ namespace AtuliaRestauruntv2.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                ingredients = ingredients.Where(i => i.Name.Contains(searchString));
+                ingredients = ingredients.Where(i => i.IngredientName.Contains(searchString));
             }
 
             ingredients = sortOrder switch
             {
-                "name_desc" => ingredients.OrderByDescending(i => i.Name),
-                _ => ingredients.OrderBy(i => i.Name),
+                "name_desc" => ingredients.OrderByDescending(i => i.IngredientName),
+                _ => ingredients.OrderBy(i => i.IngredientName),
             };
 
             return View(await ingredients.AsNoTracking().ToListAsync());
