@@ -33,9 +33,8 @@ namespace AtuliaRestauruntv2.Models
         [ValidateNever]
         public Category? Category { get; set; }//A product belongs to a category 
 
-        [ValidateNever]
-        public ICollection<OrderItem> OrderItems { get; set; } // A product is or can be in many order items
-        [ValidateNever]
+  
+   
         public ICollection<ProductIngredient>? ProductIngredients { get; set; } //A  product can have many ingredients
 
     }

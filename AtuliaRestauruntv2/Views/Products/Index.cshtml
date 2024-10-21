@@ -42,7 +42,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => product.Name)
+                    @Html.DisplayFor(modelItem => product.ProductName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => product.Price)
@@ -51,7 +51,7 @@
                     @Html.DisplayFor(modelItem => product.Stock)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => product.Category.Name)
+                    @Html.DisplayFor(modelItem => product.Category.CategoryName)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@product.ProductId">Edit</a> |
@@ -70,10 +70,9 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
             <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)">Previous</a>
         </li>
-        
+
         <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
             <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)">Next</a>
         </li>
     </ul>
 </nav>
-

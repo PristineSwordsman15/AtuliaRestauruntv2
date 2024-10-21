@@ -61,7 +61,7 @@ namespace AtuliaRestauruntv2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId,OrderDate,UserId,TotalAmount")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderId,OrderDate,TotalAmount")] Order order)
         {
             if (!ModelState.IsValid)
             {
