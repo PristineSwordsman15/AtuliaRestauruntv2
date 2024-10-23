@@ -52,7 +52,7 @@ namespace AtuliaRestauruntv2.Controllers
                 case "product_desc":
                     products = products.OrderByDescending(p => p.ProductName);
                     break;
-                case "Product":
+                case "Product": 
                 default:
                     products = products.OrderBy(p => p.ProductName);
                     break;
