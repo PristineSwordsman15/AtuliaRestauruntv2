@@ -68,14 +68,14 @@ namespace AtuliaRestauruntv2.Controllers
             return View();
         }
 
-        // POST: Ingredients/Create
+        // POST: Ingredients1/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IngredientId,Name")] Ingredient ingredient)
+        public async Task<IActionResult> Create([Bind("IngredientId,IngredientName")] Ingredient ingredient)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(ingredient);
                 await _context.SaveChangesAsync();
@@ -83,6 +83,9 @@ namespace AtuliaRestauruntv2.Controllers
             }
             return View(ingredient);
         }
+
+        // GET: Ingredients1/Edit/5
+   
 
         // GET: Ingredients/Edit/5
         public async Task<IActionResult> Edit(int? id)
