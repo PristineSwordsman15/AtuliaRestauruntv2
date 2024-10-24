@@ -168,14 +168,15 @@ namespace AtuliaRestauruntv2.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ProductNames")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
                 });
@@ -194,10 +195,6 @@ namespace AtuliaRestauruntv2.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -222,7 +219,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 1,
                             CategoryId = 2,
                             Description = "A fluffy bread popular in North India",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 7.99m,
                             ProductName = "Naan",
                             Stock = 25
@@ -232,7 +228,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 2,
                             CategoryId = 2,
                             Description = "Mild yummy rice with peas",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 10.99m,
                             ProductName = "Fried Rice",
                             Stock = 40
@@ -242,7 +237,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 3,
                             CategoryId = 2,
                             Description = "Fried Potato Curry served with Naan and Rice",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 8.50m,
                             ProductName = "Aloo Fry",
                             Stock = 10
@@ -252,7 +246,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 4,
                             CategoryId = 4,
                             Description = "Chilled Fizzy Beverage",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 2.99m,
                             ProductName = "Coke",
                             Stock = 50
@@ -262,7 +255,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 5,
                             CategoryId = 4,
                             Description = "Beverage",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 3.99m,
                             ProductName = "Water",
                             Stock = 50
@@ -272,7 +264,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 6,
                             CategoryId = 3,
                             Description = "Cool Mango drink",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 5.00m,
                             ProductName = "Mango Lassi",
                             Stock = 20
@@ -282,7 +273,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 7,
                             CategoryId = 3,
                             Description = "Indian sweet made with milk powder",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 4.99m,
                             ProductName = "Gulab Jamun",
                             Stock = 30
@@ -292,7 +282,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 8,
                             CategoryId = 3,
                             Description = "Frozen dessert",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 2.99m,
                             ProductName = "Ice Cream",
                             Stock = 60
@@ -302,7 +291,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 9,
                             CategoryId = 2,
                             Description = "Chiken flavoured lightly in spices and served with rice",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 20.99m,
                             ProductName = "Butter Chicken",
                             Stock = 30
@@ -312,7 +300,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 10,
                             CategoryId = 2,
                             Description = "Fish curry served with rice",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 19.99m,
                             ProductName = "Fish Madrasi",
                             Stock = 20
@@ -322,7 +309,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 11,
                             CategoryId = 1,
                             Description = "Spinach deepfried coated in batter",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 6.99m,
                             ProductName = "Palak Fritters",
                             Stock = 30
@@ -332,7 +318,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 12,
                             CategoryId = 1,
                             Description = "Chicken lightly coated in spices and fried",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 8.9m,
                             ProductName = "Chicken Lollipops",
                             Stock = 30
@@ -342,7 +327,6 @@ namespace AtuliaRestauruntv2.Migrations
                             ProductId = 13,
                             CategoryId = 2,
                             Description = "Lentil cooked with tomato and garnished with coriander.",
-                            ImageUrl = "https://via.placeholder.com/150",
                             Price = 7.99m,
                             ProductName = "Daal Fry",
                             Stock = 20
@@ -666,6 +650,17 @@ namespace AtuliaRestauruntv2.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AtuliaRestauruntv2.Models.Order", b =>
+                {
+                    b.HasOne("AtuliaRestauruntv2.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("AtuliaRestauruntv2.Models.Product", b =>

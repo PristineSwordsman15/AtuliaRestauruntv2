@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace AtuliaRestauruntv2.Migrations
 {
     /// <inheritdoc />
-    public partial class Identity : Migration
+    public partial class fixingproductserror1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +50,32 @@ namespace AtuliaRestauruntv2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    IngredientId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IngredientName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.IngredientId);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,6 +184,154 @@ namespace AtuliaRestauruntv2.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductIngredients",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    IngredientId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductIngredients", x => new { x.ProductId, x.IngredientId });
+                    table.ForeignKey(
+                        name: "FK_ProductIngredients_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "IngredientId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductIngredients_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "CategoryName" },
+                values: new object[,]
+                {
+                    { 1, "Appetizer" },
+                    { 2, "Main" },
+                    { 3, "Dessert" },
+                    { 4, "Beverage" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Ingredients",
+                columns: new[] { "IngredientId", "IngredientName" },
+                values: new object[,]
+                {
+                    { 1, "Potato" },
+                    { 2, "Chicken" },
+                    { 3, "Fish" },
+                    { 4, "Naan" },
+                    { 5, "Spinach" },
+                    { 6, "Tomato" },
+                    { 7, "White Rice" },
+                    { 8, "Peas" },
+                    { 9, "Coriander" },
+                    { 10, "Lentils" },
+                    { 11, "Gulab Jamun" },
+                    { 12, "Ice Cream" },
+                    { 13, "Water" },
+                    { 14, "Mango Lassi" },
+                    { 15, "Coke" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "CategoryId", "Description", "Price", "ProductName", "Stock" },
+                values: new object[,]
+                {
+                    { 1, 2, "A fluffy bread popular in North India", 7.99m, "Naan", 25 },
+                    { 2, 2, "Mild yummy rice with peas", 10.99m, "Fried Rice", 40 },
+                    { 3, 2, "Fried Potato Curry served with Naan and Rice", 8.50m, "Aloo Fry", 10 },
+                    { 4, 4, "Chilled Fizzy Beverage", 2.99m, "Coke", 50 },
+                    { 5, 4, "Beverage", 3.99m, "Water", 50 },
+                    { 6, 3, "Cool Mango drink", 5.00m, "Mango Lassi", 20 },
+                    { 7, 3, "Indian sweet made with milk powder", 4.99m, "Gulab Jamun", 30 },
+                    { 8, 3, "Frozen dessert", 2.99m, "Ice Cream", 60 },
+                    { 9, 2, "Chiken flavoured lightly in spices and served with rice", 20.99m, "Butter Chicken", 30 },
+                    { 10, 2, "Fish curry served with rice", 19.99m, "Fish Madrasi", 20 },
+                    { 11, 1, "Spinach deepfried coated in batter", 6.99m, "Palak Fritters", 30 },
+                    { 12, 1, "Chicken lightly coated in spices and fried", 8.9m, "Chicken Lollipops", 30 },
+                    { 13, 2, "Lentil cooked with tomato and garnished with coriander.", 7.99m, "Daal Fry", 20 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductIngredients",
+                columns: new[] { "IngredientId", "ProductId" },
+                values: new object[,]
+                {
+                    { 4, 1 },
+                    { 7, 2 },
+                    { 8, 2 },
+                    { 1, 3 },
+                    { 4, 3 },
+                    { 7, 3 },
+                    { 15, 4 },
+                    { 13, 5 },
+                    { 14, 6 },
+                    { 11, 7 },
+                    { 12, 8 },
+                    { 2, 9 },
+                    { 7, 9 },
+                    { 3, 10 },
+                    { 7, 10 },
+                    { 5, 11 },
+                    { 2, 12 },
+                    { 6, 13 },
+                    { 9, 13 },
+                    { 10, 13 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +370,21 @@ namespace AtuliaRestauruntv2.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ProductId",
+                table: "Orders",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductIngredients_IngredientId",
+                table: "ProductIngredients",
+                column: "IngredientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoryId",
+                table: "Products",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
@@ -215,10 +406,25 @@ namespace AtuliaRestauruntv2.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "ProductIngredients");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Ingredients");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

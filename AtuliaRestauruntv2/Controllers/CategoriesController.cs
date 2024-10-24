@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AtuliaRestauruntv2.Data;
 using AtuliaRestauruntv2.Models;
-using Microsoft.AspNetCore.Authorization;
-using PagedList;
+
 namespace AtuliaRestauruntv2.Controllers
 {
-    [Authorize] // this data annotation makes it so only logged in users can make changes to this controller
     public class CategoriesController : Controller
     {
         private readonly AtuliaRestauruntv2Context _context;
@@ -22,14 +20,14 @@ namespace AtuliaRestauruntv2.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index(string sortOrder,string currentFilter,string searchString,int? page)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
 
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["CurrentFilter"] = searchString;
 
             var categories = from c in _context.Categories
-                              select c;
+                             select c;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -44,8 +42,8 @@ namespace AtuliaRestauruntv2.Controllers
 
             return View(await categories.AsNoTracking().ToListAsync());
         }
-       
-        // GET: Categories/Details/5
+
+        // GET: Categories1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -63,24 +61,22 @@ namespace AtuliaRestauruntv2.Controllers
             return View(category);
         }
 
-        // GET: Categories/Create
+        // GET: Categories1/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
+        // POST: Categories1/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,Name")] Category category)
+        public async Task<IActionResult> Create([Bind("CategoryId,CategoryName")] Category category)
         {
             if (!ModelState.IsValid)
-                _context.Add(category);
-
             {
-                
+                _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -108,7 +104,7 @@ namespace AtuliaRestauruntv2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Name")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,CategoryName")] Category category)
         {
             if (id != category.CategoryId)
             {

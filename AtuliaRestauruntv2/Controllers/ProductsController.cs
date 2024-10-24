@@ -52,7 +52,7 @@ namespace AtuliaRestauruntv2.Controllers
                 case "product_desc":
                     products = products.OrderByDescending(p => p.ProductName);
                     break;
-                case "Product": 
+                case "Product":
                 default:
                     products = products.OrderBy(p => p.ProductName);
                     break;
@@ -85,19 +85,19 @@ namespace AtuliaRestauruntv2.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        // GET: Products1/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Products1/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Name,Description,Price,Stock,CategoryId,ImageUrl")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,ProductName,Description,Price,Stock,CategoryId")] Product product)
         {
             if (!ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace AtuliaRestauruntv2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", product.CategoryId);
             return View(product);
         }
 
@@ -202,3 +202,4 @@ namespace AtuliaRestauruntv2.Controllers
         }
     }
 }
+

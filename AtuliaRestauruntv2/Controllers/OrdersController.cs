@@ -25,14 +25,11 @@ namespace AtuliaRestauruntv2.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            //FetcH orders without including OrderDate
-            var orders = await _context.Orders.ToListAsync();
-            return View(orders);    
-            
-    
+            var orders = await _context.Orders.Include(o => o.Product).ToListAsync();
+            return View(orders);
         }
 
-        // GET: Orders/Details/5
+        // GET: Orders1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,6 +38,7 @@ namespace AtuliaRestauruntv2.Controllers
             }
 
             var order = await _context.Orders
+                .Include(o => o.Product)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
@@ -53,15 +51,15 @@ namespace AtuliaRestauruntv2.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
+            // Fetch list of products for dropdown
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductName");
             return View();
         }
 
         // POST: Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId,OrderDate,TotalAmount")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderId,OrderDate,TotalAmount,ProductId")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -69,6 +67,8 @@ namespace AtuliaRestauruntv2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            // In case of error, repopulate the product dropdown
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductName", order.ProductId);
             return View(order);
         }
 
@@ -85,15 +85,16 @@ namespace AtuliaRestauruntv2.Controllers
             {
                 return NotFound();
             }
+
+            // Fetch the product list for dropdown
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductName", order.ProductId);
             return View(order);
         }
 
         // POST: Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,OrderDate,UserId,TotalAmount")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderId,OrderDate,TotalAmount,ProductId")] Order order)
         {
             if (id != order.OrderId)
             {
@@ -120,10 +121,12 @@ namespace AtuliaRestauruntv2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            // Repopulate the dropdown on error
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductName", order.ProductId);
             return View(order);
         }
 
-        // GET: Orders/Delete/5
+        // GET: Orders1/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,6 +135,7 @@ namespace AtuliaRestauruntv2.Controllers
             }
 
             var order = await _context.Orders
+                .Include(o => o.Product)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
@@ -141,7 +145,7 @@ namespace AtuliaRestauruntv2.Controllers
             return View(order);
         }
 
-        // POST: Orders/Delete/5
+        // POST: Orders1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -150,11 +154,11 @@ namespace AtuliaRestauruntv2.Controllers
             if (order != null)
             {
                 _context.Orders.Remove(order);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool OrderExists(int id)
         {
