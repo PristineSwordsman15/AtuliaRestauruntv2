@@ -76,9 +76,11 @@ namespace AtuliaRestauruntv2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CategoryId,Name")] Category category)
         {
-            if (ModelState.IsValid)
-            {
+            if (!ModelState.IsValid)
                 _context.Add(category);
+
+            {
+                
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -113,7 +115,7 @@ namespace AtuliaRestauruntv2.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {

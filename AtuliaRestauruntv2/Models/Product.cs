@@ -26,9 +26,7 @@ namespace AtuliaRestauruntv2.Models
         [Required(ErrorMessage = "Category ID is required.")]
         public int CategoryId { get; set; }
 
-        [NotMapped]
-        public IFormFile? ImageFile { get; set; }
-        public string ImageUrl { get; set; } = "https://via.placeholder.com/150";
+       
 
         [ValidateNever]
         public Category? Category { get; set; }//A product belongs to a category 

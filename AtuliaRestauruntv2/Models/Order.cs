@@ -14,5 +14,7 @@ namespace AtuliaRestauruntv2.Models
         [Required(ErrorMessage = "Total amount is required.")]
         [Range(0.01,int.MaxValue, ErrorMessage = "Total amount must be greater than 0.")]
         public decimal TotalAmount { get; set; }
+        [Required(ErrorMessage = "Please enter the products you wish to order when creating your order" )]
+        public string ProductNames { get; set; } 
     }
 }
