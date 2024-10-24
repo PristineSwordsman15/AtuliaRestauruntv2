@@ -7,68 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AtuliaRestauruntv2.Data;
 using AtuliaRestauruntv2.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Data.SqlClient;
-using PagedList;
 
 namespace AtuliaRestauruntv2.Controllers
 {
-    [Authorize] // this data annotation makes it so only logged in users can make changes to this controller
-    public class ProductsController : Controller
+    public class Products1Controller : Controller
     {
         private readonly AtuliaRestauruntv2Context _context;
 
-        public ProductsController(AtuliaRestauruntv2Context context)
+        public Products1Controller(AtuliaRestauruntv2Context context)
         {
             _context = context;
         }
 
-        // GET: Products
-        public async Task<ViewResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
+        // GET: Products1
+        public async Task<IActionResult> Index()
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewData["ProductSortParm"] = sortOrder == "Product" ? "product_desc" : "Product";
-            ViewData["CurrentFilter"] = searchString;
-
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
-            ViewBag.CurrentFilter = searchString;
-            var products = _context.Products.Include(p => p.Category).AsQueryable();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                products = products.Where(p => p.ProductName.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "product_desc":
-                    products = products.OrderByDescending(p => p.ProductName);
-                    break;
-                case "Product": 
-                default:
-                    products = products.OrderBy(p => p.ProductName);
-                    break;
-            }
-
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
-            return View(products.ToPagedList(pageNumber, pageSize));
+            var atuliaRestauruntv2Context = _context.Products.Include(p => p.Category);
+            return View(await atuliaRestauruntv2Context.ToListAsync());
         }
 
-
-        // GET: Products/Details/5
+        // GET: Products1/Details/5
         public async Task<IActionResult> Details(int? id)
-
         {
-
             if (id == null)
             {
                 return NotFound();
@@ -85,31 +45,31 @@ namespace AtuliaRestauruntv2.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        // GET: Products1/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Products1/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Name,Description,Price,Stock,CategoryId,ImageUrl")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,ProductName,Description,Price,Stock,CategoryId")] Product product)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", product.CategoryId);
             return View(product);
         }
 
-        // GET: Products/Edit/5
+        // GET: Products1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -126,12 +86,12 @@ namespace AtuliaRestauruntv2.Controllers
             return View(product);
         }
 
-        // POST: Products/Edit/5
+        // POST: Products1/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Name,Description,Price,Stock,CategoryId,ImageUrl")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,Description,Price,Stock,CategoryId")] Product product)
         {
             if (id != product.ProductId)
             {
@@ -158,11 +118,11 @@ namespace AtuliaRestauruntv2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", product.CategoryId);
             return View(product);
         }
 
-        // GET: Products/Delete/5
+        // GET: Products1/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -181,7 +141,7 @@ namespace AtuliaRestauruntv2.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        // POST: Products1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
