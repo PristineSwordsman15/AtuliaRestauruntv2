@@ -84,10 +84,9 @@ namespace AtuliaRestauruntv2.Controllers
             return View(ingredient);
         }
 
-        // GET: Ingredients1/Edit/5
-   
 
-        // GET: Ingredients/Edit/5
+
+        // GET: Ingredients1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -103,19 +102,19 @@ namespace AtuliaRestauruntv2.Controllers
             return View(ingredient);
         }
 
-        // POST: Ingredients/Edit/5
+        // POST: Ingredients1/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IngredientId,Name")] Ingredient ingredient)
+        public async Task<IActionResult> Edit(int id, [Bind("IngredientId,IngredientName")] Ingredient ingredient)
         {
             if (id != ingredient.IngredientId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!!ModelState.IsValid)
             {
                 try
                 {
@@ -137,7 +136,6 @@ namespace AtuliaRestauruntv2.Controllers
             }
             return View(ingredient);
         }
-
         // GET: Ingredients/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
