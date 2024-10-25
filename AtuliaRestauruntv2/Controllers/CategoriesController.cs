@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AtuliaRestauruntv2.Data;
 using AtuliaRestauruntv2.Models;
-
+using Microsoft.AspNetCore.Authorization;
 namespace AtuliaRestauruntv2.Controllers
 {
     public class CategoriesController : Controller
+        
     {
+        [Authorize]
         private readonly AtuliaRestauruntv2Context _context;
 
         public CategoriesController(AtuliaRestauruntv2Context context)
