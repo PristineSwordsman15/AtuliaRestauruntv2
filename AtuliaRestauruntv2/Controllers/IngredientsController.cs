@@ -114,7 +114,7 @@ namespace AtuliaRestauruntv2.Controllers
                 return NotFound();
             }
 
-            if (!!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {

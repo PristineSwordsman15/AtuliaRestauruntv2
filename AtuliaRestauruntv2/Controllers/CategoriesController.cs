@@ -10,10 +10,11 @@ using AtuliaRestauruntv2.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace AtuliaRestauruntv2.Controllers
 {
+    [Authorize]
     public class CategoriesController : Controller
         
     {
-        [Authorize]
+      
         private readonly AtuliaRestauruntv2Context _context;
 
         public CategoriesController(AtuliaRestauruntv2Context context)
