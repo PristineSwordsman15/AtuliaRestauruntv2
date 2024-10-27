@@ -3,6 +3,7 @@
 #nullable disable
 
 using System;
+using AtuliaRestauruntv2.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace  AtuliaRestauruntv2.Areas.Identity.Pages.Account.Manage

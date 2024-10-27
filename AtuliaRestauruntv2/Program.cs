@@ -1,12 +1,17 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using AtuliaRestauruntv2.Data;
+using AtuliaRestauruntv2.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AtuliaRestauruntv2ContextConnection") ?? throw new InvalidOperationException("Connection string 'AtuliaRestauruntv2ContextConnection' not found.");
 
-builder.Services.AddDbContext<AtuliaRestauruntv2Context>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AtuliaRestauruntv2Context>(options =>
+    options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AtuliaRestauruntv2Context>();
+// Use ApplicationUser instead of ApplicationUser
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AtuliaRestauruntv2Context>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -17,7 +22,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

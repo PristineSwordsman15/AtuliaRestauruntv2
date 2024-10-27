@@ -8,7 +8,7 @@ using Microsoft.Identity.Client;
 
 namespace AtuliaRestauruntv2.Data;
 
-public class AtuliaRestauruntv2Context : IdentityDbContext<IdentityUser>
+public class AtuliaRestauruntv2Context : IdentityDbContext<ApplicationUser>
 {
     public AtuliaRestauruntv2Context(DbContextOptions<AtuliaRestauruntv2Context> options)
         : base(options)

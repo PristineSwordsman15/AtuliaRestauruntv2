@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AtuliaRestauruntv2.Migrations
 {
     [DbContext(typeof(AtuliaRestauruntv2Context))]
-    [Migration("20241024091719_fixingproductserror1")]
-    partial class fixingproductserror1
+    [Migration("20241027043035_customFields")]
+    partial class customFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

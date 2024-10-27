@@ -4,7 +4,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
+using AtuliaRestauruntv2.Models;
 namespace AtuliaRestauruntv2.Areas.Identity.Pages.Account
 {
     /// <summary>
